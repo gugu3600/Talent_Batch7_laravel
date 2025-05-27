@@ -19,7 +19,7 @@ class ArticleController extends Controller
             ["id"=>5 , "name"=> "Manga"]
         ];
 
-        return view("categories.article",
+        return view("articles.index",
         ["articles"=>$articles]);
     }
 }
