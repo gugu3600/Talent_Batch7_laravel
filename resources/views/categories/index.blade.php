@@ -10,6 +10,8 @@
     <h1>Hello</h1>
     @foreach ($categories as $category ) 
         <p>{{$category["id"]}}. {{$category["name"]}}</p>
+        {{-- <a href="{{ url('categories/'.$category['id']) }}">Show</a> --}}
+        <a href="{{route("category.show",["id"=>$category->id])  }}">Show</a>
     @endforeach
 </body>
 </html>
