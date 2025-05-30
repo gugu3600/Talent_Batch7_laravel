@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Product;
 use Illuminate\Http\Request;
+use App\Http\Requests\ProductRequest;
+use App\Http\Requests\ProductUpdateRequest;
 
 class ProductController extends Controller
 {
@@ -20,7 +22,7 @@ class ProductController extends Controller
         return view("products.create");
     }
 
-    public function store(Request $request)
+    public function store(ProductRequest $request)
     {
         $product = new Product();
         $product->create([
@@ -45,13 +47,13 @@ class ProductController extends Controller
         return view("products.edit",["product" => $product]);   
     }
 
-    public function update($id)
+    public function update($id,ProductUpdateRequest $request)
     {
         $product = Product::find($id);
         $product->update([
-            "name" => Request()->name,
-            "description" => Request()->description,
-            "price" => Request()->price,
+            "name" => $request->name,
+            "description" => $request->description,
+            "price" => $request->price,
         ]);
 
         return redirect()->route("products");

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Category;
 use Illuminate\Http\Request;
+use App\Http\Requests\ControllerUpdateRequest;
 
 class CategoriesController extends Controller
 {
@@ -25,8 +26,12 @@ class CategoriesController extends Controller
 
     public function store(Request $request)
     {
+        $data = $request->validate([
+            "name" => "required|string"
+        ]);
+
         $category = new Category();
-        $category->create(["name" => $request->name]);
+        $category->create($data);
         // $category->save();
 
         return redirect()->route("category.index");
@@ -45,12 +50,12 @@ class CategoriesController extends Controller
         return view("categories.edit",["category" => $category]);
     }
 
-    public function update($id,Request $request)
+    public function update($id,ControllerUpdateRequest $request)
     {
         // $category = Category::find($request->id);
         $category = Category::find($id);
 
-        $category->update(["name" => $request->name]);
+        $category->update(['name' => $request->name]);
 
         return redirect()->route("category.index");
     }
