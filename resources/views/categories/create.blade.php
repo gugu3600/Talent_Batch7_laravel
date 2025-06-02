@@ -26,10 +26,11 @@
             <div class="card-header">
                 <h1>Create New Category</h1>
             </div>
-            <form action="{{ route("category.store") }}" method="post">
+            <form action="{{ route("category.store") }}" method="post" enctype="multipart/form-data">
                 @csrf
                  <div class="card-body">
                     <input type="text" name="name" placeholder="Category Name" class="form-control">
+                    <input type="file" name="image" class="form-control">
                 </div>
                 <div class="card-footer">
                     <button type="submit" class="btn btn-success">Create</button>

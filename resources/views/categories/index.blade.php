@@ -11,6 +11,7 @@
     <div class="container">
         <h1>Categories</h1>
         <a href="{{ Route("category.create") }}" class="btn btn-outline-success my-4">+ Create</a>
+        <a href="{{ route("products") }}" class="btn btn-secondary my-3">Products</a>
     {{-- @foreach ($categories as $category )  --}}
         {{-- <p>{{$category["id"]}}. {{$category["name"]}}</p> --}}
         {{-- <a href="{{ url('categories/'.$category['id']) }}">Show</a> --}}
@@ -29,6 +30,7 @@
                 <tr>
                     <th class="bg-dark text-white">ID</th>
                     <th class="bg-dark text-white">Name</th>
+                    <th class="bg-dark text-white">Image</th>
                     <th class="bg-dark text-white">Actions</th>
                 </tr>
             </thead>
@@ -38,6 +40,14 @@
                 <tr>
                     <td>{{$category->id}}</td>
                     <td>{{$category->name}}</td>
+                    <td>
+                    <img
+                        src="{{ asset("categoryImages/".$category->image )}}" 
+                        alt="{{ $category->name }}"
+                        style="width:100px;height:100px"
+                    />
+                    
+                    </td>
                     <td class="d-flex">
                        <a href="{{route("category.show",["id"=>$category->id])  }}" class="me-4 btn btn-outline-dark">Show</a> 
                        <a href={{ route("category.edit",["id" => $category->id]) }} class="me-4 btn btn-outline-success">Edit</a>

@@ -18,6 +18,7 @@
             </div>
             <div class="card-body">
                 <p>{{ $product->name }} <b>{{ $product->price }}</b> <i>{{ $product->description }}</i></p>
+                <img src="{{ asset("productImages/".$product->image) }}" alt="{{ $product->img }}" style="width:50px;heigh:50px;"/>
             </div>
             <div class="card-footer">
                 <a href="{{ route('products') }}" class="btn btn-outline-dark">Back</a>

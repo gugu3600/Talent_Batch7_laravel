@@ -27,7 +27,8 @@
      @endforeach --}}
 
     <div class="container mt-5">
-        <h2><a href="{{ route("product.create") }}" class="btn btn-secondary my-3">+ Create</a></h2>
+        <a href="{{ route("product.create") }}" class="btn btn-secondary my-3 d-inline-block">+ Create</a>
+        <a href="{{ route("category.index") }}" class="btn btn-secondary my-3">Categories</a>
         <table class="table table-striped table-bordered text-center">
             <thead>
                 <tr>
@@ -35,6 +36,7 @@
                     <th>Name</th>
                     <th>Price</th>
                     <th>Description</th>
+                    <th>Category</th>
                     <th>Actions</th>
                 </tr>
             </thead>
@@ -46,6 +48,8 @@
                         <td>{{ $product->name }}</td>
                         <td>{{ $product->price }}</td>
                         <td>{{ $product->description }}</td>
+                        <td><img src="{{ asset("productImages/".$product->image) }}" alt="{{ $product->img }}" style="width:50px;heigh:50px;"/></td>
+                        <td>{{$product->category->name}}</td> 
                         <td class="d-flex justify-content-center">
                             <a href="{{ route('product', ['id' => $product->id]) }}" class="me-3 btn btn-outline-primary">Show</a>
                             <a href="{{ route('product.edit', ['id' => $product->id]) }}" class="me-3 btn btn-outline-success">Update</a>

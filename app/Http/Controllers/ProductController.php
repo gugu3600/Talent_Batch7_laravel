@@ -6,30 +6,44 @@ use App\Models\Product;
 use Illuminate\Http\Request;
 use App\Http\Requests\ProductRequest;
 use App\Http\Requests\ProductUpdateRequest;
+use App\Models\Category;
 
 class ProductController extends Controller
 {
     //
     public function index()
     {
-        $products = Product::all();
+        $products = Product::with('category')->get();
 
-        return view("products.index",["products" => $products]);
+        return view("products.index", ["products" => $products]);
     }
 
     public function create()
     {
-        return view("products.create");
+        $categories = Category::all();
+        return view("products.create", compact("categories"));
     }
 
     public function store(ProductRequest $request)
     {
-        $product = new Product();
-        $product->create([
+        // $product = new Product();
+        
+        $data = [
+            "category_id" => $request->category_id,
             "name" => $request->name,
             "description" => $request->description,
             "price" => $request->price,
-        ]);
+            "image" => $request->image,
+        ];
+
+        if($request->hasFile("image")){
+            // dd($request->image);
+            $imageName = time() . ".jpg";
+            $request->image->move(public_path("productImages"),$imageName);
+            $data = array_merge($data,["image" => $imageName]);
+        }
+        
+        Product::create($data);
 
         return redirect()->route("products");
     }
@@ -38,19 +52,21 @@ class ProductController extends Controller
     {
         $product = Product::find($id);
 
-        return view ("products.show",compact("product"));
+        return view("products.show", compact("product"));
     }
 
     public function edit($id)
     {
+        $categories = Category::all();
         $product = Product::find($id);
-        return view("products.edit",["product" => $product]);   
+        return view("products.edit", ["product" => $product,"categories" => $categories]);
     }
 
-    public function update($id,ProductUpdateRequest $request)
+    public function update($id, ProductUpdateRequest $request)
     {
         $product = Product::find($id);
         $product->update([
+            "category_id" => $request->category_id,
             "name" => $request->name,
             "description" => $request->description,
             "price" => $request->price,

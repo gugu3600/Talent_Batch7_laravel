@@ -48,6 +48,17 @@
                         <label for="des">Description</label>
                         <input type="text" name="description" id="des" class="form-control" />
                     </div>
+                    <div class="form-group">
+                        <label for="category_id">Choose Categories</label>
+                        <select name="category_id" id="category_id" class="form-select">
+                            @foreach ($categories as $category)
+                                <option value="{{ $category->id }}" @if ($category->id == $product->category_id)
+                                    selected
+                                @endif>{{$category->name}}</option>
+                            @endforeach
+                        </select>
+                        <img src="{{ asset("productImages/".$product->image) }}" alt="{{ $product->img }}" style="width:50px;heigh:50px;"/>
+                    </div>
                 </div>
                 <div class="card-footer">
                     <input type="submit" value="Update" class="btn btn-outline-success" />
@@ -58,5 +69,4 @@
     </div>
 
 </body>
-
 </html>

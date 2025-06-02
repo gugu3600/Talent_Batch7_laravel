@@ -18,6 +18,7 @@
             </div>
             <div class="card-body">
                 <p>{{ $category->id }} : {{ $category['name'] }}</p>
+                <img src="{{ asset("categoryImages/$category->image") }}" style="width:100px;height:100px;" alt=""/>
             </div>
             <div class="card-footer">
                 <a href="{{ route("category.index") }}" class="btn btn-outline-dark">Back</a>
