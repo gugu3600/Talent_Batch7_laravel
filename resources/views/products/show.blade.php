@@ -18,7 +18,13 @@
             </div>
             <div class="card-body">
                 <p>{{ $product->name }} <b>{{ $product->price }}</b> <i>{{ $product->description }}</i></p>
-                <img src="{{ asset("productImages/".$product->image) }}" alt="{{ $product->img }}" style="width:50px;heigh:50px;"/>
+                <img src="{{ asset('productImages/' . $product->image) }}" alt="{{ $product->img }}"
+                    style="width:50px;heigh:50px;" />
+                @if ($product->status == true)
+                    <p class="text-success fw-bold">Active</p>
+                @else
+                    <p class="text-danger fw-bold">Suspend</p>
+                @endif
             </div>
             <div class="card-footer">
                 <a href="{{ route('products') }}" class="btn btn-outline-dark">Back</a>

@@ -58,6 +58,10 @@
                             @endforeach
                         </select>
                         <img src="{{ asset("productImages/".$product->image) }}" alt="{{ $product->img }}" style="width:50px;heigh:50px;"/>
+                        <div class="form-group my-3">
+                            <label for="status">Status</label>
+                            <input type="checkbox" class="form-checkbox" name="status" {{$product->status == true ? "checked" : ""}}/>
+                        </div>
                     </div>
                 </div>
                 <div class="card-footer">

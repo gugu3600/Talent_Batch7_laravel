@@ -23,10 +23,11 @@ class ProductUpdateRequest extends FormRequest
     {
         return [
             "category_id" => "required",
-            "name" => "string|required",
+            "name" => "nullable",
             "price" => "required|integer",
             "description" => "required|string",
             "category_id" => "required",
+            "status" => "nullable"
         ];
     }
 }

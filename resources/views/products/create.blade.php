@@ -34,10 +34,14 @@
                     <select name="category_id" id="" class="form-select mb-4">
                         <option value="" selected disabled>Choose Category</option>
                         @foreach ($categories as $category)
-                            <option value="{{ $category->id }}">{{$category->name}}</option>
+                            <option value="{{ $category->id }}">{{ $category->name }}</option>
                         @endforeach
                     </select>
                     <input type="file" name="image" class="form-control">
+                    <div class="form-group my-3">
+                        <label for="status">Status</label>
+                        <input type="checkbox" id="status" name="status" class="form-checkbox">
+                    </div>
                 </div>
                 <div class="card-footer">
                     <input type="submit" value="Create" class="btn btn-outline-success" />

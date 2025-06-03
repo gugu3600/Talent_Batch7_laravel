@@ -36,7 +36,9 @@
                     <th>Name</th>
                     <th>Price</th>
                     <th>Description</th>
+                    <TH>Image</TH>
                     <th>Category</th>
+                    <th>Status</th>
                     <th>Actions</th>
                 </tr>
             </thead>
@@ -50,6 +52,11 @@
                         <td>{{ $product->description }}</td>
                         <td><img src="{{ asset("productImages/".$product->image) }}" alt="{{ $product->img }}" style="width:50px;heigh:50px;"/></td>
                         <td>{{$product->category->name}}</td> 
+                        @if ($product->status == true)
+                            <td class="text-success fw-bold">Active</td>
+                        @else
+                        <td class="text-danger fw-bold">Suspend</td>
+                        @endif
                         <td class="d-flex justify-content-center">
                             <a href="{{ route('product', ['id' => $product->id]) }}" class="me-3 btn btn-outline-primary">Show</a>
                             <a href="{{ route('product.edit', ['id' => $product->id]) }}" class="me-3 btn btn-outline-success">Update</a>
