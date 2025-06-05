@@ -3,6 +3,7 @@
 use App\Http\Controllers\CategoriesController;
 use App\Http\Controllers\ArticleController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\UserController;
 use App\Models\Category;
 use Illuminate\Support\Facades\Route;
 
@@ -78,3 +79,16 @@ Route::post("/products/{id}/delete",[ProductController::class,"destroy"])->name(
 
 
 Route::get("/articles",[ArticleController::class,"index"]);
+
+Route::get("/users",[UserController::class,"index"])->name("users");
+Route::get("/users/create",[UserController::class,"create"])->name("user.create");
+Route::post("/users/create",[UserController::class,"store"])->name("user.store");
+Route::get("/users/{id}",[UserController::class,"show"])->name("user");
+Route::get("/users/{id}/edit",[UserController::class,"edit"])->name("user.edit");
+Route::post("/users/{id}/edit",[UserController::class,"update"])->name("user.update");
+Route::post("/users/{id}/delete",[UserController::class,"delete"])->name("user.delete");
+
+
+// Auth::routes();
+
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
