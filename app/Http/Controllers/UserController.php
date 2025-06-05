@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\UserRequest;
+use App\Http\Requests\UsersUpdateRequest;
 use App\Repositories\User\UserRepository;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -36,22 +37,29 @@ class UserController extends Controller
 
     public function store(UserRequest $request)
     {
-        $data = [
-            "name" => $request->name,
-            "email" => $request->email,
-            "img" => $request->img,
-            "phone" => $request->phone,
-            "gender" => $request->gender,
-            "address" => $request->address,
-            "status" => $request->status == "on" ? true : false ,
-        ];
+
+        // dd($request->all());
+        
 
         if($request->hasFile("img")){
 
             $getName = time() . ".jpg";
             $request->img->move(public_path("userImages"),$getName);
-            $data = array_merge($data,["img" => $getName]);
+            $request->img = $getName;
         }
+
+        $data = [
+            "name" => $request->name,
+            "email" => $request->email,
+            "password" => $request->password,
+            "address" => $request->address,
+            "img" => $request->img,
+            "phone" => $request->phone,
+            "gender" => $request->gender,
+            "status" => $request->status == "on" ? true : false ,
+        ];
+
+        // dd($data);
 
         $this->userRepo->store($data);
         return redirect()->route("users");
@@ -63,14 +71,38 @@ class UserController extends Controller
         return view("users.edit",["user" => $user]);
     }
 
-    public function update($id,UserRequest $request)
+    public function update($id,UsersUpdateRequest $request)
     {
-        //
+
+        $user = $this->userRepo->show($id);
+
+
+        if($request->hasFile("img")){
+
+            $getName = time() . ".jpg";
+            $request->img->move(public_path("userImages"),$getName);
+            $request->img = $getName;
+        }
+
+
+         $data = [
+            "name" => $request->name,
+            "email" => $request->email,
+            "address" => $request->address,
+            "img" => $request->img,
+            "phone" => $request->phone,
+            "status" => $request->status == "on" ? true : false ,
+        ];
+
+        $user->update($data);
+        return redirect()->route("users");
     }
 
-    public function delete()
+    public function delete($id)
     {
-        //
+        $user = $this->userRepo->show($id);
+        $user->delete();
+        return redirect()->route("users");
     }
 
 

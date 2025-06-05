@@ -6,8 +6,9 @@
                 Create User
             </div>
 
-            <div class="card-body">
-                <form action="{{ Route('user.store') }}" method="post" enctype="multipart/form-data">
+            <form action="{{ Route('user.store') }}" method="post" enctype="multipart/form-data">
+                @csrf
+                <div class="card-body">
                     <div class="form-group">
                         <label for="name">Username</label>
                         <input type="text" id="name" name="name" class="form-control">
@@ -51,14 +52,14 @@
                     </div>
 
 
-            </div>
-
-            <div class="card-footer">
-                <div class="form-group">
-                    <a href="{{ Route("users") }}" class="btn btn-outline-dark">Back</a>
-                    <input type="submit" class="btn btn-outline-primary" value="Create">
                 </div>
-            </div>
+
+                <div class="card-footer">
+                    <div class="form-group">
+                        <a href="{{ Route('users') }}" class="btn btn-outline-dark">Back</a>
+                        <input type="submit" class="btn btn-outline-primary" value="Create">
+                    </div>
+                </div>
             </form>
 
         </div>

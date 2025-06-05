@@ -83,7 +83,7 @@ Route::get("/articles",[ArticleController::class,"index"]);
 Route::get("/users",[UserController::class,"index"])->name("users");
 Route::get("/users/create",[UserController::class,"create"])->name("user.create");
 Route::post("/users/create",[UserController::class,"store"])->name("user.store");
-Route::get("/users/{id}",[UserController::class,"show"])->name("user");
+// Route::get("/users/{id}",[UserController::class,"show"])->name("user");
 Route::get("/users/{id}/edit",[UserController::class,"edit"])->name("user.edit");
 Route::post("/users/{id}/edit",[UserController::class,"update"])->name("user.update");
 Route::post("/users/{id}/delete",[UserController::class,"delete"])->name("user.delete");
