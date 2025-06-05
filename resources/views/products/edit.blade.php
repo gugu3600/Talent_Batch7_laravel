@@ -1,17 +1,5 @@
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Edit Product</title>
-    <link rel="stylesheet" type="text/css"
-        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" />
-
-</head>
-
-<body>
-
+@extends("layouts.master");
+@section("content")
     {{-- <h1>Product Edit</h1>
     <form action="{{ route("product.update",["id" => $product->id]) }}" method="post">
         @csrf
@@ -48,6 +36,21 @@
                         <label for="des">Description</label>
                         <input type="text" name="description" id="des" class="form-control" />
                     </div>
+                    <div class="form-group">
+                        <label for="category_id">Choose Categories</label>
+                        <select name="category_id" id="category_id" class="form-select">
+                            @foreach ($categories as $category)
+                                <option value="{{ $category->id }}" @if ($category->id == $product->category_id)
+                                    selected
+                                @endif>{{$category->name}}</option>
+                            @endforeach
+                        </select>
+                        <img src="{{ asset("productImages/".$product->image) }}" alt="{{ $product->img }}" style="width:50px;heigh:50px;"/>
+                        <div class="form-group my-3">
+                            <label for="status">Status</label>
+                            <input type="checkbox" class="form-checkbox" name="status" {{$product->status == true ? "checked" : ""}}/>
+                        </div>
+                    </div>
                 </div>
                 <div class="card-footer">
                     <input type="submit" value="Update" class="btn btn-outline-success" />
@@ -57,6 +60,5 @@
         </div>
     </div>
 
-</body>
 
-</html>
+@endsection
