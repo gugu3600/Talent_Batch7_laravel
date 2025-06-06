@@ -13,7 +13,7 @@
                 @if ($product->status == true)
                     <p class="text-success fw-bold">Active</p>
                 @else
-                    <p class="text-danger fw-bold">Suspend</p>
+                    <p class="text-danger fw-bold">Suspend</p>text
                 @endif
             </div>
             <div class="card-footer">

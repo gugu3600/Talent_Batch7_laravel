@@ -1,7 +1,7 @@
 @extends("layouts.master");
 @section("content");
 
-    {{-- {{ dd($users) }} --}}
+    {{-- {{ dd(File::exists(public_path("userImages"),"1749106802.jpg")) }} --}}
 
     {{-- {{ print_r($users) }} --}}
 
@@ -33,11 +33,13 @@
                         <td>{{ $user->email }}</td>
                         <td>{{ $user->address }}</td>
                         <td>{{$user->gender}}</td> 
-                        @if ($user->status == true)
-                            <td class="text-success fw-bold">Active</td>
-                        @else
-                        <td class="text-danger fw-bold">Suspend</td>
-                        @endif
+                        <td>
+                           <form action="{{ route("user.status",["id" => $user->id]) }}" method="post">
+
+                            @csrf
+                            <button class="btn {{ $user->status === 1 ? "btn-success" : "btn-danger" }} }}" type="submit">{{ $user->status === 1 ? "Active" : "Suspended" }}</button>
+                           </form>
+                        </td>
                         <td><img src="{{ asset("userImages/".$user->img) }}" alt="{{ $user->img }}" style="width:50px;heigh:50px;"/></td>
                         <td>{{$user->created_at}}</td>
                         <td class="d-flex justify-content-center">

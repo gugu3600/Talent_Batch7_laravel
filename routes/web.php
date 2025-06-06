@@ -5,7 +5,10 @@ use App\Http\Controllers\ArticleController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\UserController;
 use App\Models\Category;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
+
+
 
 // Route::get('/', function () {
 //     return view('welcome');
@@ -14,7 +17,8 @@ use Illuminate\Support\Facades\Route;
 // STATIC ROUTE 
 Route::get("/",function(){
 
-    return "This is static route";
+    // return view("auth.login");
+    return view("welcome");
 });
 
 // dynamic route 
@@ -86,9 +90,9 @@ Route::post("/users/create",[UserController::class,"store"])->name("user.store")
 // Route::get("/users/{id}",[UserController::class,"show"])->name("user");
 Route::get("/users/{id}/edit",[UserController::class,"edit"])->name("user.edit");
 Route::post("/users/{id}/edit",[UserController::class,"update"])->name("user.update");
+Route::post("/users/{id}/status",[UserController::class,"status"])->name("user.status");
 Route::post("/users/{id}/delete",[UserController::class,"delete"])->name("user.delete");
 
-
-// Auth::routes();
-
+Auth::routes(["register" => false]);
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+

@@ -26,7 +26,6 @@ class UsersUpdateRequest extends FormRequest
             "email" => "string",
             "address" => "string",
             "img" =>  "nullable",
-            "status" => "nullable",
             "phone" => "nullable"
         ];
     }

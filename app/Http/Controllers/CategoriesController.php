@@ -5,16 +5,16 @@ namespace App\Http\Controllers;
 use App\Models\Category;
 use Illuminate\Http\Request;
 use App\Http\Requests\ControllerUpdateRequest;
-use App\Repositories\Category\CategoryRepository;
+use App\Repositories\Category\CategoryRepositoryInterface;
 
 class CategoriesController extends Controller
 {
     protected $categoryRepository;
 
-    public function __construct(CategoryRepository $categoryRepository)
+    public function __construct(CategoryRepositoryInterface $categoryRepository)
     {
         $this->categoryRepository = $categoryRepository;
-
+        $this->middleware("auth");
     }
     public function index()
     {
@@ -38,11 +38,11 @@ class CategoriesController extends Controller
             "image" => "required",
         ]);
 
-        if($request->hasFile("image")){
+        if ($request->hasFile("image")) {
             // dd($request->all());
             $imageName = time() . "." . $request->image->extension();
-            $request->image->move(public_path("categoryImages"),$imageName);
-            $data = array_merge($data,["image" => $imageName ]);
+            $request->image->move(public_path("categoryImages"), $imageName);
+            $data = array_merge($data, ["image" => $imageName]);
         }
 
         $this->categoryRepository->store($data);
@@ -58,17 +58,17 @@ class CategoriesController extends Controller
     {
         // $category = Category::find($id);
         $category = $this->categoryRepository->show($id);
-        return view("categories.show",compact("category"));
+        return view("categories.show", compact("category"));
     }
 
     public function edit($id)
     {
         // $category = Category::find($id);
         $category = $this->categoryRepository->show($id);
-        return view("categories.edit",["category" => $category]);
+        return view("categories.edit", ["category" => $category]);
     }
 
-    public function update($id,ControllerUpdateRequest $request)
+    public function update($id, ControllerUpdateRequest $request)
     {
         // $category = Category::find($request->id);
         // $category = Category::find($id);
