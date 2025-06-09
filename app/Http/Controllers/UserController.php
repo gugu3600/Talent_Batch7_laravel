@@ -7,7 +7,6 @@ use App\Http\Requests\UsersUpdateRequest;
 use App\Models\User;
 use App\Repositories\User\UserRepositoryInterface;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Hash;
 use App\Services\UserServices;
 
 class UserController extends Controller
@@ -83,8 +82,8 @@ class UserController extends Controller
 
     public function delete($id)
     {
-        $user = $this->userRepo->show($id);
-        $user->delete();
+       $this->userServices->delete($id);
+        // $user->delete();
         return redirect()->route("users");
     }
 

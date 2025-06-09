@@ -48,6 +48,18 @@ class UserServices
        return $user->update($data);
     }
 
+    public function delete($id)
+    {
+        $user = $this->userRepo->show($id);
+        $path = public_path("userImages");
+
+        if(File::exists($path . "/$user->img")){
+            File::delete($path . "/$user->img");
+        }
+
+        return $user->delete();
+    }
+
     public function status($id)
     {
         $user = $this->userRepo->show($id);
