@@ -4,18 +4,26 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\UserRequest;
 use App\Http\Requests\UsersUpdateRequest;
-use App\Repositories\User\UserRepository;
 use App\Models\User;
+use App\Repositories\User\UserRepositoryInterface;
 use Illuminate\Http\Request;
+use App\Services\UserServices;
+use Spatie\Permission\Models\Role;
+
+
+
 
 class UserController extends Controller
 {
 
     protected $userRepo;
+    protected $userServices;
 
-    public function __construct(UserRepository $userRepo)
+    public function __construct(UserRepositoryInterface $userRepo,UserServices $userService)
     {
+        $this->middleware("auth");
         $this->userRepo = $userRepo;
+        $this->userServices = $userService; 
     }
     public function index()
     {
@@ -32,78 +40,67 @@ class UserController extends Controller
 
     public function create()
     {
-        return view("users.create");
+       $roles = $this->userRepo->create();
+        return view("users.create",compact("roles"));
     }
 
     public function store(UserRequest $request)
     {
-
-        // dd($request->all());
-        
-
-        if($request->hasFile("img")){
-
-            $getName = time() . ".jpg";
-            $request->img->move(public_path("userImages"),$getName);
-            $request->img = $getName;
-        }
-
+        $validated = $request->validated();
+        // dd($request->img);
         $data = [
-            "name" => $request->name,
-            "email" => $request->email,
-            "password" => $request->password,
-            "address" => $request->address,
-            "img" => $request->img,
-            "phone" => $request->phone,
-            "gender" => $request->gender,
-            "status" => $request->status == "on" ? true : false ,
+             "name" =>  $validated["name"],
+            "email" => $validated["email"],
+            "password" => ($validated["password"]),
+            "address" => $validated["address"],
+            "img" =>  $request->img,
+            "status" => $validated["status"] === "on" ? true:false,
+            "gender" => $validated["gender"],
+            "phone" => $validated["phone"],
         ];
+        $user = $this->userServices->store($data,$request);
 
-        // dd($data);
-
-        $this->userRepo->store($data);
+        $user->roles()->sync($validated["roles"]);
+        // dd($user->roles());
+        // $user->roles()->sync($validated["roles"]);
         return redirect()->route("users");
     }
 
     public function edit($id)
     {
+        $roles = $this->userRepo->create();
         $user = $this->userRepo->show($id);
-        return view("users.edit",["user" => $user]);
+        return view("users.edit",["user" => $user,"roles" => $roles]);
     }
 
     public function update($id,UsersUpdateRequest $request)
     {
 
-        $user = $this->userRepo->show($id);
-
-
-        if($request->hasFile("img")){
-
-            $getName = time() . ".jpg";
-            $request->img->move(public_path("userImages"),$getName);
-            $request->img = $getName;
-        }
-
+        $validate = $request->validated();
 
          $data = [
-            "name" => $request->name,
-            "email" => $request->email,
-            "address" => $request->address,
+            "name" => $validate["name"],
+            "email" => $validate["email"],
+            "address" => $validate["address"],
             "img" => $request->img,
-            "phone" => $request->phone,
-            "status" => $request->status == "on" ? true : false ,
+            "phone" => $validate["phone"],
         ];
 
-        $user->update($data);
+        $this->userServices->update($id,$request,$data,$validate);
         return redirect()->route("users");
     }
 
     public function delete($id)
     {
-        $user = $this->userRepo->show($id);
-        $user->delete();
+       $this->userServices->delete($id);
+        // $user->delete();
         return redirect()->route("users");
     }
 
+    public function status($id)
+    {
+        $this->userServices->status($id);
 
+        return redirect()->route("users");
+    }
 }

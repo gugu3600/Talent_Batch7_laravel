@@ -16,7 +16,7 @@
 
                     <div class="form-group">
                         <label for="email">Email</label>
-                        <input type="email" id="email" name="email" class="form-control">
+                        <input type="email" id="email" name="email" class="form-control" value="@gmail.com">
                     </div>
 
                     <div class="form-group">
@@ -26,7 +26,7 @@
 
                     <div class="form-group">
                         <label for="Address">Address</label>
-                        <textarea name="address" id="address" class="form-control" placeholder="Eneter an address"></textarea>
+                        <textarea name="address" id="address" class="form-control" placeholder="Eneter an address" ></textarea>
                     </div>
 
                     <div class="form-group">
@@ -40,6 +40,15 @@
                     <div class="form-group">
                         <label for="phone">Phone</label>
                         <input type="text" id="phone" name="phone" class="form-control">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="roles">Choose Roles</label>
+                        <select name="roles" id="">
+                            @foreach ($roles as $role)
+                                <option value="{{ $role->id }}">{{$role->name}}</option>
+                            @endforeach
+                        </select>
                     </div>
 
                     <div class="form-group">

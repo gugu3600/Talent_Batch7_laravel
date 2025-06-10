@@ -8,15 +8,21 @@ use App\Http\Requests\ProductRequest;
 use App\Http\Requests\ProductUpdateRequest;
 use App\Models\Category;
 use App\Repositories\Product\ProductRepository;
+use App\Repositories\Product\ProductRepositoryInterface;
+use App\Services\ProductServices;
 
 class ProductController extends Controller
 {
     //
     protected $productRepository;
+    protected $productService;
 
-    public function __construct(ProductRepository $productRepository)
+    public function __construct(ProductRepositoryInterface $productRepository,ProductServices $productService)
     {
-     $this->productRepository = $productRepository;   
+     $this->middleware("auth"); 
+     $this->productRepository = $productRepository;
+     $this->productService = $productService;  
+
     }
     public function index()
     {
@@ -36,26 +42,18 @@ class ProductController extends Controller
     public function store(ProductRequest $request)
     {
        
+        $validated = $request->validated();
         
         $data = [
-            "category_id" => $request->category_id,
-            "name" => $request->name,
-            "description" => $request->description,
-            "price" => $request->price,
+            "category_id" => $validated["category_id"],
+            "name" => $validated["name"],
+            "description" => $validated["description"],
+            "price" => $validated["price"],
             "image" => $request->image,
-            "status" => $request->status === "on" ? true : false,
+            "status" => $validated["status"] === "on" ? true : false,
         ];
-
-        if($request->hasFile("image")){
-            // dd($request->image);
-            $imageName = time() . ".jpg";
-            $request->image->move(public_path("productImages"),$imageName);
-            $data = array_merge($data,["image" => $imageName]);
-        }
-
-        // print_r($data);
         
-        $this->productRepository->store($data);
+        $this->productService->store($data,$request);
 
         return redirect()->route("products");
     }
@@ -100,4 +98,12 @@ class ProductController extends Controller
         $product->delete();
         return redirect()->route("products");
     }
+
+     public function total()
+    {
+        $products = $this->productService->total();
+        
+        return view("index",compact("products"));
+    }
+
 }

@@ -2,7 +2,9 @@
 @section('content')
     <div class="container">
         <h1>Categories</h1>
-        <a href="{{ Route('category.create') }}" class="btn btn-outline-success my-4">+ Create</a>
+        @can('categoryCreate')
+            <a href="{{ Route('category.create') }}" class="btn btn-outline-success my-4">+ Create</a>
+        @endcan
         <a href="{{ route('products') }}" class="btn btn-secondary my-3">Products</a>
         {{-- @foreach ($categories as $category)  --}}
         {{-- <p>{{$category["id"]}}. {{$category["name"]}}</p> --}}
@@ -40,12 +42,17 @@
                         <td class="d-flex">
                             <a href="{{ route('category.show', ['id' => $category->id]) }}"
                                 class="me-4 btn btn-outline-dark">Show</a>
-                            <a href={{ route('category.edit', ['id' => $category->id]) }}
-                                class="me-4 btn btn-outline-success">Edit</a>
-                            <form action="{{ route('category.delete', $category->id) }}" method="POST">
-                                @csrf
-                                <button type="submit" class="btn btn-outline-danger">Delete</button>
-                            </form>
+                            @can('categoryUpdate')
+                                <a href={{ route('category.edit', ['id' => $category->id]) }}
+                                    class="me-4 btn btn-outline-success">Edit</a>
+                            @endcan
+                            @can('categoryDelete')
+                                <form action="{{ route('category.delete', $category->id) }}" method="POST">
+                                    @csrf
+                                    <button type="submit" class="btn btn-outline-danger">Delete</button>
+                                </form>
+                            @endcan
+
                         </td>
                     </tr>
                 @endforeach

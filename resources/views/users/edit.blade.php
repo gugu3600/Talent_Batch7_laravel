@@ -23,25 +23,28 @@
 
                         <div class="form-group">
                             <label for="Address">Address</label>
-                            <textarea name="address" id="address" class="form-control" placeholder="Eneter an address" value="{{ $user->address }}"></textarea>
+                            <textarea name="address" id="address" class="form-control" placeholder="Eneter an address">{{ $user->address }}</textarea>
                         </div>
 
                         <div class="form-group">
                             <label for="phone">Phone</label>
                             <input type="text" id="phone" name="phone" class="form-control" value="{{ $user->phone }}">
                         </div>
-
-                        <div class="form-group">
-                            <label for="status">Status</label>
-                            @if($user->status == 1)
-                            <input type="checkbox" id="status" class="form-check" class="form-control" name="status" checked/>
-                            @else
-                            <input type="checkbox" id="status" class="form-check" class="form-control" name="status"/>
-                            @endif
-                        </div>
+                        
                         <div class="form-group">
                             <label for="image">Image</label>
                             <input type="file" id="image" name="img" class="form-control">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="role">Choose Role</label>
+                            <select name="roles" id="role">
+                                @foreach ($roles as $role )
+                                    <option value="{{ $role->id }}" @foreach ($user->roles as $userRole )
+                                        {{ $role->id === $userRole->id ? "selected" : "" }}
+                                    @endforeach>{{$role->name}}</option>
+                                @endforeach
+                            </select>
                         </div>
 
 

@@ -21,6 +21,6 @@ class ProductRepositoryServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        $this->app->singleton(ProductRepositoryInterface::class,ProductRepository::class);
+ //       $this->app->singleton(ProductRepositoryInterface::class,ProductRepository::class);
     }
 }

@@ -26,8 +26,8 @@ class UsersUpdateRequest extends FormRequest
             "email" => "string",
             "address" => "string",
             "img" =>  "nullable",
-            "status" => "nullable",
-            "phone" => "nullable"
+            "phone" => "nullable",
+            "roles" => "required|exists:roles,id"
         ];
     }
 }
