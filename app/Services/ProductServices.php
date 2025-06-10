@@ -25,4 +25,10 @@ class ProductServices
 
         return $this->productRepo->store($data);
     }
+
+    public function total()
+    {
+        $products = $this->productRepo->index();
+        return  count($products);
+    }
 }

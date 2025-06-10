@@ -1,10 +1,13 @@
-<?php 
+<?php
 
 namespace App\Services;
 
 use App\Repositories\User\UserRepositoryInterface;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Hash;
+use Spatie\Permission\Models\Role;
+
+
 
 class UserServices
 {
@@ -13,39 +16,40 @@ class UserServices
 
     public function __construct(UserRepositoryInterface $userRepository)
     {
-        $this->userRepo = $userRepository;   
+        $this->userRepo = $userRepository;
     }
 
-    public function store($data,$request)
+    public function store($data, $request)
     {
-        
+
         // dd($request);
-        if($request->hasFile("img")){
+        if ($request->hasFile("img")) {
 
             $imgName = $data["name"] . time() . ".jpg";
-            $request->img->move(public_path("userImages"),$imgName);
+            $request->img->move(public_path("userImages"), $imgName);
             $data["img"] = $imgName;
         }
 
-            $data["password"] = Hash::make($data["password"]);
+        $data["password"] = Hash::make($data["password"]);
 
         // print_r($data);
         return $this->userRepo->store($data);
     }
 
-    public function update($id,$request,$data)
+    public function update($id, $request, $data,$validate)
     {
-       $user =  $this->userRepo->show($id);
-       $path = public_path("userImages");
+        $user =  $this->userRepo->show($id);
+        $path = public_path("userImages");
 
-       if($request->hasFile("img") and File::exists($path . "/$user->img")){
-        File::delete($path . "/$user->img");
-        $imgName = $data["name"] . time() . ".jpg";
-        $request->img->move(public_path("userImages"),$imgName);
-        $data["img"] = $imgName;
-       }
+        if ($request->hasFile("img") and File::exists($path . "/$user->img")) {
+            File::delete($path . "/$user->img");
+            $imgName = $data["name"] . time() . ".jpg";
+            $request->img->move(public_path("userImages"), $imgName);
+            $data["img"] = $imgName;
+        }
 
-       return $user->update($data);
+        $user->roles()->sync($validate["roles"]);
+         return $user->update($data);
     }
 
     public function delete($id)
@@ -53,7 +57,7 @@ class UserServices
         $user = $this->userRepo->show($id);
         $path = public_path("userImages");
 
-        if(File::exists($path . "/$user->img")){
+        if (File::exists($path . "/$user->img")) {
             File::delete($path . "/$user->img");
         }
 

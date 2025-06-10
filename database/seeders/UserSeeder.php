@@ -5,6 +5,8 @@ namespace Database\Seeders;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use App\Models\User;
+use Spatie\Permission\Models\Role;
+
 
 class UserSeeder extends Seeder
 {
@@ -13,24 +15,14 @@ class UserSeeder extends Seeder
      */
     public function run(): void
     {
-        $persons = [
-            ["name" => "koko" , "email" => "koko@gmail.com", "address" => "Yangon","password" => "abcd1234", "gender" => "m" ,"phone" => "091234", "status" => true],
+        $admin = User::create([
+            "name" => "koko" , "email" => "admin@gmail.com", "address" => "Yangon","password" => "admin", "gender" => "m" ,"phone" => "091234", "status" => true]);
 
-            ["name" => "hlahla" , "email" => "hlahla@gmail.com","password" => "abcd1234", "address" => "Bagan",  "gender" => "f" ,"phone" => "091234", "status" => false],
+        $client = User::create([
+            "name" => "agag" , "email" => "user@gmail.com", "address" => "Yangon","password" => "user", "gender" => "m" ,"phone" => "091234", "status" => true
+        ]);
 
-            ["name" => "mgmg" , "email" => "mgmg@gmail.com",
-            "password" => "abcd1234", "address" => "Bago", "gender" => "m" ,"phone" => "091234", "status" => true],
-
-            ["name" => "myamya" , "email" => "myamya@gmail.com","password" => "abcd1234", "address" => "Yangon", "gender" => "m" ,"phone" => "091234", "status" => false],
-
-            ["name" => "agag" , "email" => "agag@gmail.com", "address" => "Yangon", "password" => "abcd1234", "phone" => "091234", "gender" => "m" , "status" => true],
-        ];
-
-        foreach($persons as $person){
-
-            User::create($person);
-        }
-
-
+        $admin->assignRole("admin");
+        $client->assignRole("client");
     }
 }

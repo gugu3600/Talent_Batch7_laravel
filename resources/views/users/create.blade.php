@@ -43,6 +43,15 @@
                     </div>
 
                     <div class="form-group">
+                        <label for="roles">Choose Roles</label>
+                        <select name="roles" id="">
+                            @foreach ($roles as $role)
+                                <option value="{{ $role->id }}">{{$role->name}}</option>
+                            @endforeach
+                        </select>
+                    </div>
+
+                    <div class="form-group">
                         <label for="status">Status</label>
                         <input type="checkbox" id="status" class="form-check" class="form-control" name="status">
                     </div>

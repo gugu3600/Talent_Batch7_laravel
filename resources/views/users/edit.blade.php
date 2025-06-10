@@ -36,6 +36,17 @@
                             <input type="file" id="image" name="img" class="form-control">
                         </div>
 
+                        <div class="form-group">
+                            <label for="role">Choose Role</label>
+                            <select name="roles" id="role">
+                                @foreach ($roles as $role )
+                                    <option value="{{ $role->id }}" @foreach ($user->roles as $userRole )
+                                        {{ $role->id === $userRole->id ? "selected" : "" }}
+                                    @endforeach>{{$role->name}}</option>
+                                @endforeach
+                            </select>
+                        </div>
+
 
                     </div>
 

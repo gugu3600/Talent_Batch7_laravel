@@ -1,5 +1,6 @@
-@extends("layouts.master");
-@section("content");
+@extends('layouts.master');
+@section('content')
+    ;
 
     {{-- <h1>Products List</h1>
 
@@ -16,8 +17,8 @@
      @endforeach --}}
 
     <div class="container mt-5">
-        <a href="{{ route("product.create") }}" class="btn btn-secondary my-3 d-inline-block">+ Create</a>
-        <a href="{{ route("category.index") }}" class="btn btn-secondary my-3">Categories</a>
+        <a href="{{ route('product.create') }}" class="btn btn-secondary my-3 d-inline-block">+ Create</a>
+        <a href="{{ route('category.index') }}" class="btn btn-secondary my-3">Categories</a>
         <table class="table table-striped table-bordered text-center">
             <thead>
                 <tr>
@@ -39,20 +40,29 @@
                         <td>{{ $product->name }}</td>
                         <td>{{ $product->price }}</td>
                         <td>{{ $product->description }}</td>
-                        <td><img src="{{ asset("productImages/".$product->image) }}" alt="{{ $product->img }}" style="width:50px;heigh:50px;"/></td>
-                        <td>{{$product->category->name}}</td> 
+                        <td><img src="{{ asset('productImages/' . $product->image) }}" alt="{{ $product->img }}"
+                                style="width:50px;heigh:50px;" /></td>
+                        <td>{{ $product->category->name }}</td>
                         @if ($product->status == true)
                             <td class="text-success fw-bold">Active</td>
                         @else
-                        <td class="text-danger fw-bold">Suspend</td>
+                            <td class="text-danger fw-bold">Suspend</td>
                         @endif
                         <td class="d-flex justify-content-center">
-                            <a href="{{ route('product', ['id' => $product->id]) }}" class="me-3 btn btn-outline-primary">Show</a>
-                            <a href="{{ route('product.edit', ['id' => $product->id]) }}" class="me-3 btn btn-outline-success">Update</a>
-                            <form action="{{ route('product.delete', ['id' => $product->id]) }}" method="post">
-                                @csrf
-                                <button type="submit" class="me-3 btn btn-outline-danger">Delete</button>
-                            </form>
+                            <a href="{{ route('product', ['id' => $product->id]) }}"
+                                class="me-3 btn btn-outline-primary">Show</a>
+                            @can('productUpdate')
+                                <a href="{{ route('product.edit', ['id' => $product->id]) }}"
+                                    class="me-3 btn btn-outline-success">Update</a>
+                            @endcan
+
+                            @can('productDelete')
+                                <form action="{{ route('product.delete', ['id' => $product->id]) }}" method="post">
+                                    @csrf
+                                    <button type="submit" class="me-3 btn btn-outline-danger">Delete</button>
+                                </form>
+                            @endcan
+
                         </td>
                     </tr>
                 @endforeach

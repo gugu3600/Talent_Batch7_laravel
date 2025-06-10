@@ -2,7 +2,9 @@
 
 use App\Http\Controllers\CategoriesController;
 use App\Http\Controllers\ArticleController;
+use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UserController;
 use App\Models\Category;
 use Illuminate\Support\Facades\Auth;
@@ -76,6 +78,7 @@ Route::post("/category/{id}/delete",[CategoriesController::class,"destroy"])->na
 Route::get("/products",[ProductController::class,'index'])->name("products");
 Route::get("/products/create",[ProductController::class,'create'])->name("product.create");
 Route::post("/products/create",[ProductController::class,'store'])->name("product.store");
+Route::get("/products/total",[ProductController::class,"total"])->name("products.total");
 Route::get("/products/{id}",[ProductController::class,'show'])->name("product");
 Route::get("/products/{id}/edit",[ProductController::class,'edit'])->name("product.edit");
 Route::post("/products/{id}/edit",[ProductController::class,'update'])->name("product.update");
@@ -83,6 +86,7 @@ Route::post("/products/{id}/delete",[ProductController::class,"destroy"])->name(
 
 
 Route::get("/articles",[ArticleController::class,"index"]);
+
 
 Route::get("/users",[UserController::class,"index"])->name("users");
 Route::get("/users/create",[UserController::class,"create"])->name("user.create");
@@ -96,3 +100,6 @@ Route::post("/users/{id}/delete",[UserController::class,"delete"])->name("user.d
 Auth::routes(["register" => false]);
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
+
+Route::resource("/roles",RoleController::class);
+Route::resource("/permissions",PermissionController::class);

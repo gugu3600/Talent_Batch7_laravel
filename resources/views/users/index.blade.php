@@ -5,6 +5,7 @@
 
     {{-- {{ print_r($users) }} --}}
 
+    {{-- {{ dd($users) }} --}}
     <div class="container mt-5">
         <a href="{{ route("category.index") }}" class="btn btn-secondary my-3">Categories</a>
         <a href="{{ route("users") }}" class="btn btn-secondary my-3">Users</a>
@@ -20,6 +21,7 @@
                     <TH>Gender</TH>
                     <th>Status</th>
                     <th>Image</th>
+                    <th>Roles</th>
                     <th>Created Date</th>
                     <th>Actions</th>
                 </tr>
@@ -41,6 +43,9 @@
                            </form>
                         </td>
                         <td><img src="{{ asset("userImages/".$user->img) }}" alt="{{ $user->img }}" style="width:50px;heigh:50px;"/></td>
+                        @foreach ($user->roles as $role)
+                            <td>{{$role->name}}</td>
+                        @endforeach
                         <td>{{$user->created_at}}</td>
                         <td class="d-flex justify-content-center">
                             <a href="{{ route('user', ['id' => $user->id]) }}" class="me-3 btn btn-outline-primary">Show</a>

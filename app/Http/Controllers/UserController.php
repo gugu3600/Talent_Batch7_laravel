@@ -8,6 +8,10 @@ use App\Models\User;
 use App\Repositories\User\UserRepositoryInterface;
 use Illuminate\Http\Request;
 use App\Services\UserServices;
+use Spatie\Permission\Models\Role;
+
+
+
 
 class UserController extends Controller
 {
@@ -36,7 +40,8 @@ class UserController extends Controller
 
     public function create()
     {
-        return view("users.create");
+       $roles = $this->userRepo->create();
+        return view("users.create",compact("roles"));
     }
 
     public function store(UserRequest $request)
@@ -53,14 +58,19 @@ class UserController extends Controller
             "gender" => $validated["gender"],
             "phone" => $validated["phone"],
         ];
-        $this->userServices->store($data,$request);
+        $user = $this->userServices->store($data,$request);
+
+        $user->roles()->sync($validated["roles"]);
+        // dd($user->roles());
+        // $user->roles()->sync($validated["roles"]);
         return redirect()->route("users");
     }
 
     public function edit($id)
     {
+        $roles = $this->userRepo->create();
         $user = $this->userRepo->show($id);
-        return view("users.edit",["user" => $user]);
+        return view("users.edit",["user" => $user,"roles" => $roles]);
     }
 
     public function update($id,UsersUpdateRequest $request)
@@ -76,7 +86,7 @@ class UserController extends Controller
             "phone" => $validate["phone"],
         ];
 
-        $this->userServices->update($id,$request,$data);
+        $this->userServices->update($id,$request,$data,$validate);
         return redirect()->route("users");
     }
 

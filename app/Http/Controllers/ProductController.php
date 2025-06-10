@@ -98,4 +98,12 @@ class ProductController extends Controller
         $product->delete();
         return redirect()->route("products");
     }
+
+     public function total()
+    {
+        $products = $this->productService->total();
+        
+        return view("index",compact("products"));
+    }
+
 }

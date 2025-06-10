@@ -1,4 +1,4 @@
-{{-- <div class="app-sidebar sidebar-shadow">
+<div class="app-sidebar sidebar-shadow">
     <div class="app-header__logo">
         <div class="logo-src"></div>
         <div class="header__pane ml-auto">
@@ -40,13 +40,15 @@
                     </a>
                 </li>
                 <li class="app-sidebar__heading">UI Components</li>
-                <li>
+               @can("categoryList")
+                    <li>
                     <a href="{{route('category.index')}}">
                         <i class="metismenu-icon pe-7s-diamond"></i>
                         Category
                         <i class="metismenu-state-icon pe-7s-angle-down caret-left"></i>
                     </a>
                 </li>
+               @endcan
                 <li>
                     <a href="{{route('products')}}">
                         <i class="metismenu-icon pe-7s-diamond"></i>
@@ -54,7 +56,23 @@
                         <i class="metismenu-state-icon pe-7s-angle-down caret-left"></i>
                     </a>
                 </li>
+
+                <li>
+                    <a href="{{route('users')}}">
+                        <i class="metismenu-icon pe-7s-diamond"></i>
+                        Users
+                        <i class="metismenu-state-icon pe-7s-angle-down caret-left"></i>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="{{route('roles.index')}}">
+                        <i class="metismenu-icon pe-7s-diamond"></i>
+                        Roles
+                        <i class="metismenu-state-icon pe-7s-angle-down caret-left"></i>
+                    </a>
+                </li>
             </ul>
         </div>
     </div>
-</div> --}}
+</div>
