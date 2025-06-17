@@ -72,6 +72,8 @@ class RoleController extends Controller
         $role = $this->roleRepo->edit($id);
         $permissions = $this->roleRepo->create();
 
+        // $userPermission = $role->permissions()->pluck("id")->toArray();
+
         return view("roles.edit",["role" => $role,"permissions" => $permissions]);
     }
 

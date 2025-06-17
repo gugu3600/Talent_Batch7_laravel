@@ -14,6 +14,7 @@
                         <label for="permission">Add New Permission</label>
                         <input type="text" name="name" id="permission">
                     </div>
+                    
                 </div>
 
                 <div class="card-footer">

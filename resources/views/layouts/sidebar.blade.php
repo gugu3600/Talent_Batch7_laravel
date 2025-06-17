@@ -72,6 +72,14 @@
                         <i class="metismenu-state-icon pe-7s-angle-down caret-left"></i>
                     </a>
                 </li>
+
+                 <li>
+                    <a href="{{route('permissions.index')}}">
+                        <i class="metismenu-icon pe-7s-diamond"></i>
+                        Permissions
+                        <i class="metismenu-state-icon pe-7s-angle-down caret-left"></i>
+                    </a>
+                </li>
             </ul>
         </div>
     </div>
