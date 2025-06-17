@@ -16,7 +16,7 @@ class ProductAPIResource extends JsonResource
     {
         return [
             "id" => $this->id,
-            "category_id" => $this->category_id,
+            "category_id" => $this->category->name,
             "name" => $this->name,
             "description" => $this->description,
             "image" => asset("productImages/" . $this->image),

@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use App\Repositories\Role\RoleRepositoryInterface;
 use App\Http\Controllers\API\BaseController;
 use Illuminate\Support\Facades\Validator;
+
 class RoleController extends BaseController
 {
     protected $roleRepo;
@@ -29,7 +30,23 @@ class RoleController extends BaseController
      */
     public function store(Request $request)
     {
-        $validated = 
+        $validated = Validator::make($request->all(),[
+            "name" => "required|string",
+            "permissions" => "required|exists:permissions,id"
+        ]);
+
+        if($validated->fails()){
+            return $this->error("Error Created New Role",$validated->errors(),418);
+        }
+
+        $data = [
+            "name" => $request->name,
+            "permissions" => $request->permissions
+        ];
+
+        $role = $this->roleRepo->store($request->all());
+        $role->permissions()->sync([$request->permissions]);
+        return $this->success($data,"Successfully Created Roles",200);
     }
 
     /**
