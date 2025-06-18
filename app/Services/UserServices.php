@@ -36,7 +36,7 @@ class UserServices
         return $this->userRepo->store($data);
     }
 
-    public function update($id, $request, $data,$validate)
+    public function update($id, $request, $data)
     {
         $user =  $this->userRepo->show($id);
         $path = public_path("userImages");
@@ -48,7 +48,7 @@ class UserServices
             $data["img"] = $imgName;
         }
 
-        $user->roles()->sync($validate["roles"]);
+        $user->roles()->sync($request["roles"]);
          return $user->update($data);
     }
 

@@ -61,3 +61,5 @@
         </table>
     </div>
 @endsection
+
+{{--i change login route to /users from /home at laravel/ui/auth-backend/RedirectsUsers.php -> --}}

@@ -2,8 +2,8 @@
 
 @section('content')
     <div class="container">
-        <form action="{{ route('roles.update',["role" => $role->id]) }}" method="POST">
-            {{ method_field("PATCH") }}
+        <form action="{{ route('roles.update', ['role' => $role->id]) }}" method="POST">
+            {{ method_field('PATCH') }}
             @csrf
             <div class="card">
                 <div class="card-header">
@@ -16,20 +16,20 @@
                         <input type="text" name="name" id="role" value="{{ $role->name }}">
                     </div>
                     <label for="permit" class="d-block mb-3">Select Permissions</label>
+                    @foreach ($permissions as $permission)
+                        <div class="my-3">
+                            <label for="permit{{ $permission->id }}" class="mb-3">{{ $permission->name }}</label>
+                            <input type="checkbox" id="permit{{ $permission->id }}" name="permissions[]" value="{{ $permission->id }}" class="mb-3"
+                                @foreach ($role->permissions as $rolePermit)
+                                {{ $rolePermit->id === $permission->id ? 'checked' : '' }} @endforeach>
+                        </div>
+                    @endforeach
 
-                    <div class="form-group">
-                        @foreach ($permissions as $permission)
-                            <label for="" class="d-block">{{ $permission->name }}</label>
-                            <input type="checkbox" name="permissions[]" value="{{ $permission->id}}" @foreach ($role->permissions as $rolePermit )
-                                {{ $rolePermit->id === $permission->id ? "checked" : "" }}
-                            @endforeach>
-                        @endforeach
-                    </div>
                 </div>
 
                 <div class="card-footer">
                     <input type="submit" class="btn btn-success me-3" value="Add New Role">
-                    <a href="{{ route("roles.index") }}" class="btn btn-danger">Back</a>
+                    <a href="{{ route('roles.index') }}" class="btn btn-danger">Back</a>
                 </div>
             </div>
         </form>

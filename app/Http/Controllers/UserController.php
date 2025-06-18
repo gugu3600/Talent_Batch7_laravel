@@ -86,7 +86,7 @@ class UserController extends Controller
             "phone" => $validate["phone"],
         ];
 
-        $this->userServices->update($id,$request,$data,$validate);
+        $this->userServices->update($id,$request,$data);
         return redirect()->route("users");
     }
 

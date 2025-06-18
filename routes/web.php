@@ -32,10 +32,15 @@ Route::get("/dynamic/{id}",function($id){
 
 // Naming Route
 
+// Route::get("/dashboard",function(){
+
+//     return "This is naming route";
+// })->name("myname");
+
 Route::get("/dashboard",function(){
 
-    return "This is naming route";
-})->name("myname");
+    return view("threed");
+});
 
 //use naming route with redirect 
 
