@@ -20,6 +20,11 @@ class ProductController extends BaseController
     {
         $this->productRepo = $productRepo;
         $this->productService = $productService;
+
+        $this->middleware('permission:productList', ['only' => ['index']]);
+        $this->middleware('permission:productCreate', ['only' => ['store']]);
+        $this->middleware('permission:productUpdate', ['only' => ['update']]);
+        $this->middleware('permission:productDelete', ['only' => ['destroy']]);
     }
     public function index()
     {

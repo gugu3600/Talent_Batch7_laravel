@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use App\Repositories\Role\RoleRepositoryInterface;
 use App\Http\Controllers\API\BaseController;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Validator as ValidationValidator;
 
 class RoleController extends BaseController
 {
@@ -16,6 +17,11 @@ class RoleController extends BaseController
     public function __construct(RoleRepositoryInterface $roleRepo)
     {
         $this->roleRepo = $roleRepo;
+
+        $this->middleware('permission:roleList', ['only' => ['index']]);
+        $this->middleware('permission:roleCreate', ['only' => ['store']]);
+        $this->middleware('permission:roleUpdate', ['only' => ['update']]);
+        $this->middleware('permission:roleDelete', ['only' => ['destroy']]);
     }
     public function index()
     {
@@ -36,17 +42,18 @@ class RoleController extends BaseController
         ]);
 
         if($validated->fails()){
-            return $this->error("Error Created New Role",$validated->errors(),418);
+            return $this->error("Error Created New Role",$validated->errors(),422);
         }
 
         $data = [
             "name" => $request->name,
-            "permissions" => $request->permissions
+            "permissions" => [$request->permissions]
         ];
 
-        $role = $this->roleRepo->store($request->all());
-        $role->permissions()->sync([$request->permissions]);
-        return $this->success($data,"Successfully Created Roles",200);
+        $role = $this->roleRepo->store($data);
+        $role->permissions()->sync($request->permissions);
+        $data["permissions"] = $role->permissions()->pluck("name")->toArray();
+        return $this->success($data,"Successfully Created Roles",201);
     }
 
     /**
@@ -54,7 +61,11 @@ class RoleController extends BaseController
      */
     public function show(string $id)
     {
-        //
+        $role = $this->roleRepo->show($id);
+        
+        $data = new RoleAPIResource($role);
+
+        return $this->success($data,"Role Retrived Successfully",200);
     }
 
     /**
@@ -62,7 +73,26 @@ class RoleController extends BaseController
      */
     public function update(Request $request, string $id)
     {
-        //
+        $validated = Validator::make($request->all(),[
+            "name" => "required|string",
+            "permissions" => "required|exists:permissions,id",
+        ]);
+
+        if($validated->fails()){
+            return $this->error("Error Created New Role",$validated->errors(),422);
+        }
+
+        $data = [
+            "name" => $request->name,
+            "permissions" => [$request->permissions]
+            // "permissions" => [$request->permissions],
+        ];
+
+        $role = $this->roleRepo->edit($id);
+        $role->update($data);
+        $role->permissions()->sync($request->permissions);
+        $data["permissions"] = $role->permissions()->pluck("name")->toArray();
+        return $this->success($data,"updated successfully",201);
     }
 
     /**
@@ -70,6 +100,10 @@ class RoleController extends BaseController
      */
     public function destroy(string $id)
     {
-        //
+        $role = $this->roleRepo->edit($id);
+
+        $role->delete();
+
+        return $this->success(null,"deleted role successfully",200);
     }
 }
